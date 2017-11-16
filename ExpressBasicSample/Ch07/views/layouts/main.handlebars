@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Meadowlark Travel</title>
+		{{#if showTests}}
+			<link rel="stylesheet" href="/vendor/mocha.css"/>
+		{{/if}}
+		{{{_sections.head}}}
+		<meta name="description" content=""/>
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+		<style type="text/css">
+			body{
+				padding-top:50px;
+				padding-bottom: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<header><img src="/img/logo.png" alt='Meadowlark Travel Logo'></header>
+		<div class="container">
+			{{{body}}}
+			<hr>
+			<footer><p>&copy;Meadowlark Travel 2017</p></footer>
+		</div>
+
+		<script type="text/javascript" src="/vendor/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript">
+			window.jQuery||document.write("<script src='/vendor/jquery-2.1.1.min.js'><\/script>")
+		</script>
+		{{{_sections.jquery}}}
+		{{#if showTests}}
+			<div id="mocha"></div>
+			<script type="text/javascript" src="/vendor/mocha.js"></script>
+			<script type="text/javascript" src="/vendor/chai.js"></script>
+			<script type="text/javascript">
+				mocha.ui('tdd');
+				var assert=chai.assert;
+			</script>
+			<script type="text/javascript" src="/qa/tests-global.js"></script>
+			{{#if pageTestScript}}
+				<script src="{{pageTestScript}}"></script>
+			{{/if}}
+
+			<script type="text/javascript">mocha.run();</script>
+		{{/if}}
+	</body>
+</html>
