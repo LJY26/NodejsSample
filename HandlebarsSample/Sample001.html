@@ -1,0 +1,105 @@
+<html>
+	<head>
+		<title>表达式</title>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="handlebars-v4.0.11.js"></script>
+		
+	</head>
+	<body>
+		<script id="tpl" type="text/x-handlebars-template">
+			<div class="demo">
+			表达式用法：
+				{{name}}
+				{{content.title}}
+			</div>
+			<br/>
+			<div class="list">
+				Block表达式 用法:<br/>
+				<ul>
+				{{# programme}}
+					<li>{{this}}</li>
+				{{/ programme}}
+				</ul>
+				each 用法:<br/>
+				<ul>
+				{{#each programme2}}
+					<li>{{this.title}}</li>
+				{{/each}}
+				</ul>
+				if用法:<br/>
+				{{#if data}}
+				<ul>
+					{{#each data.list}}
+					<li>{{this}}</li>
+					{{/each}}
+				</ul>
+				{{else}}
+					{{data.error}}
+				{{/if}}
+				unless用法：<br/>
+				{{#unless data}}
+				<ul>
+					{{#each data.list}}
+						<li>{{this}}</li>
+					{{/each}}
+				</ul>
+				{{else}}
+					{{data.error}}
+				{{/unless}}
+				<br/>with用法:<br/>
+				{{#with data}}
+				{{#if this}}
+				<ul>
+					<li>访问path用法：</li>
+					{{#each ../data.list}}
+						<li>{{this}}</li>
+					{{/each}}
+				</ul>
+				{{else}}
+					{{error}}
+				{{/if}}
+				{{/with}}
+				{{! 注释}}
+			</div>
+			<div class="demo2">
+				<h1>By {{fullName1 author}}</h1>
+				<div>{{body}}</div>
+				<h1>Comments</h1>
+				{{#each comments}}
+				<h2>By  {{fullName2}}</h2>
+				<div>{{body}}</div>
+				{{/each}}
+			</div>
+		</script>
+		<script type="text/javascript">
+			$(function(){
+				var tpl=$("#tpl").html();
+				var template=Handlebars.compile(tpl);
+				var context={name:"李金燚",
+						content:{title:"测试"},
+						programme:["html","css","javascript"],
+						programme2:[{title:"坚持"},{title:"倾听"}],
+						data:{
+							list:["倾听","毅力","耐心"],
+							error:"error"
+						},
+						author:{firstName:"李",lastName:"金燚"},
+						body:"Learning Handlebars",
+						comments:[{
+							author:{firstName:"李",lastName:"金燚"},
+							body:"Me too!",
+						}]};
+				Handlebars.registerHelper('fullName1',function(person){
+					return person.firstName+person.lastName;
+				});
+				Handlebars.registerHelper('fullName2',function(){
+					console.log(this);
+					return this.author.firstName+this.author.lastName;
+				});
+				var html=template(context);
+				$("body").html(html);
+				
+			});
+		</script>
+	</body>
+</html>
