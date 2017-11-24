@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<title>swipe指令</title>
+		<script type="text/javascript" src="./angular.min.js"></script>
+		<script type="text/javascript" src="./angular-touch.js"></script>
+		<script type="text/javascript" src="./hammer.min.js"></script>
+	</head>
+	<body ng-app="myApp" ng-controller="myController">
+		<ul>
+			<li ng-repeat="mail in emails">
+				<div ng-show="!mail.showActions" ng-swipe-left="mail.showActions=true">
+					<div class="from">From:<span>{{mail.from}}</span></div>
+					<div class="body">{{mail.body}}</div>
+				</div>
+				<div ng-show="mail.showActions" ng-swipe-right="mail.showActions=false">
+					<ul class="actions">
+
+						<li><button>Archive</button></li>
+						<li><button>Trash</button></li>
+					</ul>
+
+				</div>
+			</li>
+		</ul>
+
+		<div id="photowrapper">
+			<div class="cardProps" hm-taps="tapped($event)">
+				<div class="tradingcard">
+					<img src="./1.png" alt=""/>
+					<span>Ari</span>
+				</div>
+				<div class="tradingcard">
+					<img src="./2.png" alt=""/>
+					<span>Nate</span>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			angular.module("myApp",["ngTouch","angular-gestures"])
+					.controller('myController', ['$scope', function ($scope) {
+						$scope.emails=[
+							{showActions:false,body:"测试1",from:"来源1"},
+							{showActions:false,body:"测试2",from:"来源2"},
+							{showActions:true,body:"测试3",from:"来源3"},
+						];
+						$scope.tapped=function($event){
+							var ele=$event.target;
+							var x=Math.floor(Math.random()*200)+1;
+							
+						}
+					}])
+					.directive('mySlideController', ['$swipe',function () {
+						return {
+							restrict: 'EA',
+							link: function (scope, iElement, iAttrs,ctrl) {
+								var startX,pointX;
+								$swipe.bind(iElement,{
+									'start':function(coords){
+										startX=coords.x;
+										pointX=coords.y;
+									},
+									'move':function(coords){
+										var delta=coords.x-pointX;
+									},
+									'end':function(coords){
+
+									},
+									'cancel':function(coords){
+
+									}
+								})
+							}
+						};
+					}]);
+		</script>
+	</body>
+</html>
